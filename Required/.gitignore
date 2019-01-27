@@ -1,0 +1,13 @@
+\.DS_Store
+build/
+
+client/out/
+client.properties
+
+server/avatars/
+server/out/
+server/local.conf
+
+gameserver.log
+
+client/Cache/credentials\.txt
