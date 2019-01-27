@@ -2,8 +2,7 @@
 :# Open RSC: A replica RSC private server framework
 
 :# Path variables:
-SET mariadb="Required\mariadb10.3.8\bin\mysqld.exe"
-SET mariadbconnect="Required\mariadb10.3.8\bin\mysql.exe"
+SET mariadbpath="Required\mariadb10.3.8\bin\"
 
 :<------------Begin Start------------>
 :start
@@ -15,8 +14,9 @@ echo Choices:
 echo   %RED%1%NC% - Run Game
 echo   %RED%2%NC% - Rank a player
 echo   %RED%3%NC% - Backup database
-echo   %RED%4%NC% - Reset player databases
-echo   %RED%5%NC% - Exit
+echo   %RED%4%NC% - Restore database
+echo   %RED%5%NC% - Reset entire database
+echo   %RED%6%NC% - Exit
 echo:
 SET /P action=Please enter a number choice from above:
 echo:
@@ -24,8 +24,9 @@ echo:
 if /i "%action%"=="1" goto run
 if /i "%action%"=="2" goto rank
 if /i "%action%"=="3" goto backup
-if /i "%action%"=="4" goto reset
-if /i "%action%"=="5" goto exit
+if /i "%action%"=="4" goto import
+if /i "%action%"=="5" goto reset
+if /i "%action%"=="6" goto exit
 
 echo Error! %action% is not a valid option. Press enter to try again.
 echo:
@@ -48,7 +49,7 @@ cls
 echo:
 echo Starting Open RSC.
 echo:
-cd Required && call START "" run.cmd
+cd Required && call START "" run.cmd && cd ..
 echo:
 goto start
 :<------------End Run------------>
@@ -81,13 +82,14 @@ goto start
 
 :admin
 echo:
+echo Make sure you are logged out first!
 echo Type the username of the player you wish to set as an admin and press enter.
 echo:
 SET /P username=""
-call START "" %mariadb% --console
+call START "" %mariadbpath%mysqld.exe --console
 echo Player update will occur in 5 seconds (gives time to start the database server on slow PCs)
 PING localhost -n 6 >NUL
-call %mariadbconnect% -uroot -proot -D openrsc_game -e "USE openrsc_game; UPDATE `openrsc_players` SET `group_id` = '1' WHERE `openrsc_players`.`username` = '%username%';"
+call %mariadbpath%mysql.exe -uroot -proot -D openrsc_game -e "USE openrsc_game; UPDATE `openrsc_players` SET `group_id` = '1' WHERE `openrsc_players`.`username` = '%username%';"
 echo:
 echo %username% has been made an admin!
 echo:
@@ -96,13 +98,14 @@ goto start
 
 :mod
 echo:
+echo Make sure you are logged out first!
 echo Type the username of the player you wish to set as a mod and press enter.
 echo:
 SET /P username=""
-call START "" %mariadb% --console
+call START "" %mariadbpath%mysqld.exe --console
 echo Player update will occur in 5 seconds (gives time to start the database server on slow PCs)
 PING localhost -n 6 >NUL
-call %mariadbconnect% -uroot -proot -D openrsc_game -e "USE openrsc_game; UPDATE `openrsc_players` SET `group_id` = '2' WHERE `openrsc_players`.`username` = '%username%';"
+call %mariadbpath%mysql.exe -uroot -proot -D openrsc_game -e "USE openrsc_game; UPDATE `openrsc_players` SET `group_id` = '2' WHERE `openrsc_players`.`username` = '%username%';"
 echo:
 echo %username% has been made a mod!
 echo:
@@ -111,13 +114,14 @@ goto start
 
 :regular
 echo:
+echo Make sure you are logged out first!
 echo Type the username of the player you wish to set as a regular player and press enter.
 echo:
 SET /P username=""
-call START "" %mariadb% --console
+call START "" %mariadbpath%mysqld.exe --console
 echo Player update will occur in 5 seconds (gives time to start the database server on slow PCs)
 PING localhost -n 6 >NUL
-call %mariadbconnect% -uroot -proot -D openrsc_game -e "USE openrsc_game; UPDATE `openrsc_players` SET `group_id` = '10' WHERE `openrsc_players`.`username` = '%username%';"
+call %mariadbpath%mysql.exe -uroot -proot -D openrsc_game -e "USE openrsc_game; UPDATE `openrsc_players` SET `group_id` = '10' WHERE `openrsc_players`.`username` = '%username%';"
 echo:
 echo %username% has been made a regular player!
 echo:
@@ -128,9 +132,16 @@ goto start
 
 :<------------Begin Backup------------>
 :backup
+taskkill /F /IM Java*
 cls
 echo:
-echo This feature has not yet been added.
+echo What do you want to name your player database backup? (Avoid spaces and symbols for the filename)
+echo:
+SET /P filename=""
+call START "" %mariadbpath%mysqld.exe --console
+call START "" %mariadbpath%mysqldump.exe -uroot -proot --database openrsc_game --result-file="%filename%.sql"
+echo:
+echo Player database backup complete.
 echo:
 pause
 goto start
@@ -139,9 +150,18 @@ goto start
 
 :<------------Begin Import------------>
 :import
+taskkill /F /IM Java*
 cls
 echo:
-echo This feature has not yet been added.
+dir /B *.sql
+echo:
+echo Which player database listed above do you wish to restore?
+echo:
+SET /P filename=""
+call START "" %mariadbpath%mysqld.exe --console
+call %mariadbpath%mysql.exe -uroot -proot < %filename%
+echo:
+echo Player database restore complete.
 echo:
 pause
 goto start
@@ -150,6 +170,7 @@ goto start
 
 :<------------Begin Reset------------>
 :reset
+taskkill /F /IM Java*
 cls
 echo:
 echo Are you ABSOLUTELY SURE that you want to reset the player database?
@@ -167,10 +188,10 @@ goto start
 :wipe
 cls
 echo:
-call START "" %mariadb% --console
+call START "" %mariadbpath%mysqld.exe --console
 echo Database wipe will occur in 5 seconds (gives time to start the database server on slow PCs)
 PING localhost -n 6 >NUL
-call %mariadbconnect% -uroot -proot < Required/openrsc_game.sql
+call %mariadbpath%mysql.exe -uroot -proot < Required/openrsc_game.sql
 echo:
 echo The player database has been reset!
 echo:

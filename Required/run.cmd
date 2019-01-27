@@ -2,11 +2,11 @@
 :# Open RSC: A replica RSC private server framework
 
 :# Path variables:
-SET mariadb="mariadb10.3.8\bin\mysqld.exe"
-SET antpath="apache-ant-1.10.5\bin\ant"
+SET mariadbpath="mariadb10.3.8\bin\"
+SET antpath="apache-ant-1.10.5\bin\"
 
-call START /min "" %mariadb% --console
-call START /min "" %antpath% -f server\build.xml runserver
+call START /min "" %mariadbpath%mysqld.exe --console
+call START /min "" %antpath%ant -f server\build.xml runserver
 
 echo Launching the game in 10 seconds (gives time to start on slow PCs)
 PING localhost -n 11 >NUL
