@@ -9,5 +9,3 @@ server/out/
 server/local.conf
 
 gameserver.log
-
-client/Cache/credentials\.txt
