@@ -191,7 +191,8 @@ echo:
 call START "" %mariadbpath%mysqld.exe --console
 echo Database wipe will occur in 5 seconds (gives time to start the database server on slow PCs)
 PING localhost -n 6 >NUL
-call %mariadbpath%mysql.exe -uroot -proot < Required/openrsc_game.sql
+call %mariadbpath%mysql.exe -uroot -proot < Required/openrsc_game_server.sql
+call %mariadbpath%mysql.exe -uroot -proot < Required/openrsc_game_players.sql
 echo:
 echo The player database has been reset!
 echo:
