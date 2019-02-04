@@ -1,379 +1,15 @@
--- phpMyAdmin SQL Dump
--- version 4.8.3
--- https://www.phpmyadmin.net/
---
--- Host: mysql:3306
--- Generation Time: Nov 17, 2018 at 05:35 PM
--- Server version: 10.3.9-MariaDB-1:10.3.9+maria~bionic-log
--- PHP Version: 7.2.2
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `openrsc_game`
---
-DROP DATABASE IF EXISTS `openrsc_game`;
 CREATE DATABASE IF NOT EXISTS `openrsc_game` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `openrsc_game`;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_achievements`
---
-
-DROP TABLE IF EXISTS `openrsc_achievements`;
-CREATE TABLE IF NOT EXISTS `openrsc_achievements` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `extra` varchar(255) DEFAULT NULL,
-  `added` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `openrsc_achievements`
---
-
-INSERT INTO `openrsc_achievements` (`id`, `name`, `description`, `extra`, `added`) VALUES
-(1, 'Best Player', 'Get to 1782 skill total level', 'This achievement will be complete when you have reached the maximum level of 99 in ALL skills in the skill menu.', 0),
-(2, 'Pker journey', 'Killing 15 enemies in wilderness', 'You have to kill 15 other players in wilderness in order to complete this task', 0),
-(3, 'Holy pker', 'Kill 10 enemies without dying', 'Killing 10 enemies without dying can be very tough, make sure you bring full inventory of food and potions to wilderness.', 0),
-(4, 'Dominating Greaters', 'Slay 30 Greater demons', NULL, 0),
-(5, 'Edgeville Town', 'Walk your way to Edgeville town', NULL, 0),
-(6, 'Emerald miner', 'Find 5 emeralds from mining rocks', NULL, 0),
-(7, 'Bone collector', 'Collect 50 enemy bones', NULL, 0),
-(8, 'Magic beginner', 'Kill an NPC with magic', NULL, 0),
-(9, 'Scimitar master', 'kill 100 enemies with a scimitar', NULL, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_achievement_reward`
---
-
-DROP TABLE IF EXISTS `openrsc_achievement_reward`;
-CREATE TABLE IF NOT EXISTS `openrsc_achievement_reward` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `achievement_id` int(10) NOT NULL,
-  `item_id` int(10) NOT NULL,
-  `amount` int(10) NOT NULL,
-  `guaranteed` int(10) NOT NULL,
-  `reward_type` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_achievement_status`
---
-
-DROP TABLE IF EXISTS `openrsc_achievement_status`;
-CREATE TABLE IF NOT EXISTS `openrsc_achievement_status` (
-  `dbid` int(10) NOT NULL AUTO_INCREMENT,
-  `id` int(10) UNSIGNED NOT NULL,
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `unlocked` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`dbid`)
-) ENGINE=MyISAM AUTO_INCREMENT=799 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_achievement_task`
---
-
-DROP TABLE IF EXISTS `openrsc_achievement_task`;
-CREATE TABLE IF NOT EXISTS `openrsc_achievement_task` (
-  `achievement_id` int(10) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `do_id` int(10) NOT NULL,
-  `do_amount` int(10) NOT NULL,
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_auctions`
---
-
-DROP TABLE IF EXISTS `openrsc_auctions`;
-CREATE TABLE IF NOT EXISTS `openrsc_auctions` (
-  `auctionID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `itemID` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `amount_left` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
-  `seller` int(10) UNSIGNED NOT NULL,
-  `seller_username` varchar(12) NOT NULL,
-  `buyer_info` text NOT NULL,
-  `sold-out` tinyint(4) NOT NULL DEFAULT 0,
-  `time` varchar(255) NOT NULL DEFAULT '0',
-  `was_cancel` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`auctionID`),
-  KEY `auctionID` (`auctionID`),
-  KEY `itemID` (`itemID`),
-  KEY `seller_username_2` (`seller_username`),
-  KEY `time` (`time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_bank`
---
-
-DROP TABLE IF EXISTS `openrsc_bank`;
-CREATE TABLE IF NOT EXISTS `openrsc_bank` (
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `id` int(10) UNSIGNED NOT NULL,
-  `amount` int(10) UNSIGNED NOT NULL DEFAULT 1,
-  `slot` int(5) UNSIGNED NOT NULL DEFAULT 0,
-  `dbid` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_chat_logs`
---
-
-DROP TABLE IF EXISTS `openrsc_chat_logs`;
-CREATE TABLE IF NOT EXISTS `openrsc_chat_logs` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `sender` varchar(12) NOT NULL,
-  `message` varchar(255) NOT NULL,
-  `time` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `time` (`time`),
-  KEY `sender` (`sender`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_clan`
---
-
-DROP TABLE IF EXISTS `openrsc_clan`;
-CREATE TABLE IF NOT EXISTS `openrsc_clan` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(16) NOT NULL,
-  `tag` varchar(5) NOT NULL,
-  `leader` varchar(12) NOT NULL,
-  `kick_setting` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
-  `invite_setting` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
-  `allow_search_join` tinyint(1) UNSIGNED NOT NULL DEFAULT 2,
-  `matches_won` mediumint(5) UNSIGNED NOT NULL DEFAULT 0,
-  `matches_lost` mediumint(5) UNSIGNED NOT NULL DEFAULT 0,
-  `clan_points` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `bank_size` mediumint(5) UNSIGNED NOT NULL DEFAULT 10,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_clan_players`
---
-
-DROP TABLE IF EXISTS `openrsc_clan_players`;
-CREATE TABLE IF NOT EXISTS `openrsc_clan_players` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `clan_id` int(10) UNSIGNED NOT NULL,
-  `username` varchar(12) NOT NULL,
-  `rank` tinyint(1) UNSIGNED NOT NULL,
-  `kills` mediumint(5) UNSIGNED NOT NULL DEFAULT 0,
-  `deaths` mediumint(5) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_curstats`
---
-
-DROP TABLE IF EXISTS `openrsc_curstats`;
-CREATE TABLE IF NOT EXISTS `openrsc_curstats` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `cur_attack` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_defense` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_strength` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_hits` tinyint(3) UNSIGNED NOT NULL DEFAULT 10,
-  `cur_ranged` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_prayer` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_magic` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_cooking` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_woodcut` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_fletching` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_fishing` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_firemaking` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_crafting` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_smithing` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_mining` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_herblaw` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_agility` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  `cur_thieving` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id`),
-  KEY `playerID` (`playerID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_droplogs`
---
-
-DROP TABLE IF EXISTS `openrsc_droplogs`;
-CREATE TABLE IF NOT EXISTS `openrsc_droplogs` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `itemID` int(10) DEFAULT NULL,
-  `playerID` int(10) DEFAULT NULL,
-  `dropAmount` int(10) DEFAULT NULL,
-  `npcId` int(10) DEFAULT NULL,
-  `ts` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_experience`
---
-
-DROP TABLE IF EXISTS `openrsc_experience`;
-CREATE TABLE IF NOT EXISTS `openrsc_experience` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `exp_attack` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_defense` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_strength` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_hits` int(9) UNSIGNED NOT NULL DEFAULT 4616,
-  `exp_ranged` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_prayer` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_magic` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_cooking` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_woodcut` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_fletching` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_fishing` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_firemaking` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_crafting` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_smithing` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_mining` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_herblaw` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_agility` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  `exp_thieving` int(9) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `playerID` (`playerID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_expired_auctions`
---
-
-DROP TABLE IF EXISTS `openrsc_expired_auctions`;
-CREATE TABLE IF NOT EXISTS `openrsc_expired_auctions` (
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `claim_id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) NOT NULL,
-  `item_amount` int(11) NOT NULL,
-  `time` varchar(255) NOT NULL,
-  `claim_time` varchar(255) NOT NULL DEFAULT '0',
-  `claimed` tinyint(1) NOT NULL DEFAULT 0,
-  `explanation` varchar(255) NOT NULL DEFAULT ' ',
-  PRIMARY KEY (`claim_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_friends`
---
-
-DROP TABLE IF EXISTS `openrsc_friends`;
-CREATE TABLE IF NOT EXISTS `openrsc_friends` (
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `friend` bigint(19) UNSIGNED NOT NULL,
-  `friendName` varchar(12) NOT NULL,
-  `dbid` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`dbid`),
-  KEY `friend` (`friend`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_game_reports`
---
-
-DROP TABLE IF EXISTS `openrsc_game_reports`;
-CREATE TABLE IF NOT EXISTS `openrsc_game_reports` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `reporter` varchar(12) NOT NULL,
-  `reported` varchar(12) NOT NULL,
-  `time` int(10) UNSIGNED NOT NULL,
-  `reason` int(5) UNSIGNED NOT NULL,
-  `chatlog` text DEFAULT NULL,
-  `reporter_x` int(5) DEFAULT NULL,
-  `reporter_y` int(5) DEFAULT NULL,
-  `reported_x` int(5) NOT NULL DEFAULT 0,
-  `reported_y` int(5) DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_generic_logs`
---
-
-DROP TABLE IF EXISTS `openrsc_generic_logs`;
-CREATE TABLE IF NOT EXISTS `openrsc_generic_logs` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `message` text NOT NULL,
-  `time` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id` (`id`),
-  KEY `time` (`time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_giveaway`
---
-
-DROP TABLE IF EXISTS `openrsc_giveaway`;
-CREATE TABLE IF NOT EXISTS `openrsc_giveaway` (
-  `next_giveaway` varchar(20) NOT NULL,
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_grounditems`
---
 
 DROP TABLE IF EXISTS `openrsc_grounditems`;
 CREATE TABLE IF NOT EXISTS `openrsc_grounditems` (
@@ -385,11 +21,7 @@ CREATE TABLE IF NOT EXISTS `openrsc_grounditems` (
   `idx` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`idx`),
   KEY `idx` (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=1070 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
---
--- Dumping data for table `openrsc_grounditems`
---
+) ENGINE=MyISAM AUTO_INCREMENT=1072 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 INSERT INTO `openrsc_grounditems` (`id`, `x`, `y`, `amount`, `respawn`, `idx`) VALUES
 (471, 133, 211, 1, 30, 1),
@@ -1350,44 +982,6 @@ INSERT INTO `openrsc_grounditems` (`id`, `x`, `y`, `amount`, `respawn`, `idx`) V
 (362, 614, 3564, 1, 30, 1070),
 (1264, 426, 3708, 1, 30, 1071);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_ignores`
---
-
-DROP TABLE IF EXISTS `openrsc_ignores`;
-CREATE TABLE IF NOT EXISTS `openrsc_ignores` (
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `ignore` bigint(19) UNSIGNED NOT NULL,
-  `dbid` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`dbid`),
-  KEY `ignore` (`ignore`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_invitems`
---
-
-DROP TABLE IF EXISTS `openrsc_invitems`;
-CREATE TABLE IF NOT EXISTS `openrsc_invitems` (
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `id` int(10) UNSIGNED NOT NULL,
-  `amount` int(10) UNSIGNED NOT NULL DEFAULT 1,
-  `wielded` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `slot` int(5) UNSIGNED NOT NULL,
-  `dbid` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_itemdef`
---
-
 DROP TABLE IF EXISTS `openrsc_itemdef`;
 CREATE TABLE IF NOT EXISTS `openrsc_itemdef` (
   `id` int(11) NOT NULL,
@@ -1417,10 +1011,6 @@ CREATE TABLE IF NOT EXISTS `openrsc_itemdef` (
   KEY `id_2` (`id`),
   KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `openrsc_itemdef`
---
 
 INSERT INTO `openrsc_itemdef` (`id`, `bankNoteID`, `originalItemID`, `name`, `description`, `command`, `isFemaleOnly`, `isMembersOnly`, `isStackable`, `isUntradable`, `isWearable`, `appearanceID`, `wearableID`, `wearSlot`, `requiredLevel`, `requiredSkillID`, `armourBonus`, `weaponAimBonus`, `weaponPowerBonus`, `magicBonus`, `prayerBonus`, `basePrice`) VALUES
 (0, 1290, -1, 'Iron Mace', 'A spiky mace', '', 0, 0, 0, 0, 1, 118, 16, 4, 1, 0, 0, 8, 6, 0, 0, 63),
@@ -3532,59 +3122,6 @@ INSERT INTO `openrsc_itemdef` (`id`, `bankNoteID`, `originalItemID`, `name`, `de
 (2142, -1, -1, 'Hardcore ironman platebody', 'Take it off and what are you?', '', 0, 0, 0, 0, 1, 252, 322, 1, 1, 1, 20, 0, 0, 0, 0, 560),
 (2143, -1, -1, 'Hardcore ironman platelegs', 'Take it off and what are you?', '', 0, 0, 0, 0, 1, 253, 644, 2, 1, 1, 10, 0, 0, 0, 0, 280);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_live_feeds`
---
-
-DROP TABLE IF EXISTS `openrsc_live_feeds`;
-CREATE TABLE IF NOT EXISTS `openrsc_live_feeds` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `username` varchar(12) NOT NULL,
-  `message` varchar(165) NOT NULL,
-  `time` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_logins`
---
-
-DROP TABLE IF EXISTS `openrsc_logins`;
-CREATE TABLE IF NOT EXISTS `openrsc_logins` (
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `time` int(5) UNSIGNED NOT NULL,
-  `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
-  `dbid` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`dbid`),
-  KEY `ip` (`ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_name_changes`
---
-
-DROP TABLE IF EXISTS `openrsc_name_changes`;
-CREATE TABLE IF NOT EXISTS `openrsc_name_changes` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `old_name` varchar(12) NOT NULL,
-  `new_name` varchar(12) NOT NULL,
-  `date` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_npcdef`
---
-
 DROP TABLE IF EXISTS `openrsc_npcdef`;
 CREATE TABLE IF NOT EXISTS `openrsc_npcdef` (
   `primary_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3626,10 +3163,6 @@ CREATE TABLE IF NOT EXISTS `openrsc_npcdef` (
   `canEdit` tinyint(1) NOT NULL,
   PRIMARY KEY (`primary_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=805 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `openrsc_npcdef`
---
 
 INSERT INTO `openrsc_npcdef` (`primary_id`, `id`, `name`, `description`, `command`, `command2`, `attack`, `strength`, `hits`, `defense`, `combatlvl`, `isMembers`, `attackable`, `aggressive`, `respawnTime`, `sprites1`, `sprites2`, `sprites3`, `sprites4`, `sprites5`, `sprites6`, `sprites7`, `sprites8`, `sprites9`, `sprites10`, `sprites11`, `sprites12`, `hairColour`, `topColour`, `bottomColour`, `skinColour`, `camera1`, `camera2`, `walkModel`, `combatModel`, `combatSprite`, `canEdit`) VALUES
 (1, 0, 'Unicorn', 'It\'s a unicorn', '', '', 21, 23, 19, 23, 21, 0, 1, 0, 30, 130, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 201, 230, 6, 6, 7, 0),
@@ -4435,12 +3968,6 @@ INSERT INTO `openrsc_npcdef` (`primary_id`, `id`, `name`, `description`, `comman
 (802, 800, 'Ultimate Iron Man', 'An Ultimate Iron Man', 'Armour', NULL, 0, 0, 0, 0, 0, 0, 0, 0, 45, 0, 248, 249, -1, -1, -1, -1, -1, -1, -1, -1, -1, 11167296, 8, 14, 13415270, 145, 220, 6, 6, 5, 1),
 (803, 801, 'Hardcore Iron Man', 'A Hardcore Iron Man', 'Armour', NULL, 0, 0, 0, 0, 0, 0, 0, 0, 45, 250, 251, 252, -1, -1, -1, -1, -1, -1, -1, -1, -1, 11167296, 8, 14, 13415270, 145, 220, 6, 6, 5, 1);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_npcdrops`
---
-
 DROP TABLE IF EXISTS `openrsc_npcdrops`;
 CREATE TABLE IF NOT EXISTS `openrsc_npcdrops` (
   `npcdef_id` int(11) DEFAULT NULL,
@@ -4451,10 +3978,6 @@ CREATE TABLE IF NOT EXISTS `openrsc_npcdrops` (
   PRIMARY KEY (`db_index`),
   UNIQUE KEY `db_index` (`db_index`)
 ) ENGINE=MyISAM AUTO_INCREMENT=16063 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `openrsc_npcdrops`
---
 
 INSERT INTO `openrsc_npcdrops` (`npcdef_id`, `amount`, `id`, `weight`, `db_index`) VALUES
 (0, '1', 20, 0, 1),
@@ -6507,7 +6030,8 @@ INSERT INTO `openrsc_npcdrops` (`npcdef_id`, `amount`, `id`, `weight`, `db_index
 (321, '1', 28, 2, 11348),
 (321, '1', 70, 2, 11349),
 (321, '1', 151, 1, 11350),
-(356, '1', 202, 450, 13355),
+(356, '1', 202, 450, 13355);
+INSERT INTO `openrsc_npcdrops` (`npcdef_id`, `amount`, `id`, `weight`, `db_index`) VALUES
 (356, '1', 151, 450, 13356),
 (356, '1', 155, 350, 13357),
 (356, '1', 150, 350, 13358),
@@ -6546,8 +6070,7 @@ INSERT INTO `openrsc_npcdrops` (`npcdef_id`, `amount`, `id`, `weight`, `db_index
 (344, '100', 31, 1500, 13584),
 (344, '30', 42, 500, 13594),
 (344, '1', 42, 500, 13595),
-(344, '3', 38, 500, 13596);
-INSERT INTO `openrsc_npcdrops` (`npcdef_id`, `amount`, `id`, `weight`, `db_index`) VALUES
+(344, '3', 38, 500, 13596),
 (344, '30', 38, 500, 13597),
 (344, '1', 223, 1550, 13598),
 (344, '1', 373, 1550, 13602),
@@ -6668,27 +6191,6 @@ INSERT INTO `openrsc_npcdrops` (`npcdef_id`, `amount`, `id`, `weight`, `db_index
 (477, '1', 527, 110, 13929),
 (477, '1', 1277, 2, 13930);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_npckills`
---
-
-DROP TABLE IF EXISTS `openrsc_npckills`;
-CREATE TABLE IF NOT EXISTS `openrsc_npckills` (
-  `ID` int(10) NOT NULL AUTO_INCREMENT,
-  `npcID` int(10) DEFAULT NULL,
-  `playerID` int(10) DEFAULT NULL,
-  `killCount` int(10) DEFAULT 0,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_npclocs`
---
-
 DROP TABLE IF EXISTS `openrsc_npclocs`;
 CREATE TABLE IF NOT EXISTS `openrsc_npclocs` (
   `id` int(10) DEFAULT NULL,
@@ -6701,11 +6203,7 @@ CREATE TABLE IF NOT EXISTS `openrsc_npclocs` (
   `dbid` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`dbid`),
   UNIQUE KEY `fsdf` (`dbid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6877 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `openrsc_npclocs`
---
+) ENGINE=InnoDB AUTO_INCREMENT=6897 DEFAULT CHARSET=utf8;
 
 INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`, `maxY`, `dbid`) VALUES
 (60, 362, 360, 363, 2459, 2457, 2460, 3),
@@ -6749,7 +6247,6 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (251, 199, 195, 203, 3252, 3250, 3257, 59),
 (251, 197, 195, 203, 3252, 3250, 3257, 60),
 (251, 197, 195, 203, 3255, 3250, 3257, 61),
-(251, 200, 195, 203, 3255, 3250, 3257, 63),
 (43, 473, 471, 485, 520, 514, 524, 64),
 (43, 475, 471, 485, 519, 514, 524, 65),
 (43, 473, 471, 485, 517, 514, 524, 66),
@@ -7137,8 +6634,6 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (153, 332, 308, 342, 448, 439, 465, 586),
 (153, 322, 308, 342, 440, 439, 465, 587),
 (153, 319, 308, 342, 446, 439, 465, 588),
-(114, 222, 200, 232, 466, 430, 475, 589),
-(114, 225, 200, 232, 449, 430, 475, 590),
 (65, 208, 200, 210, 434, 430, 439, 591),
 (65, 202, 200, 210, 435, 430, 439, 592),
 (65, 207, 200, 210, 434, 430, 439, 593),
@@ -7934,12 +7429,12 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (137, 282, 282, 284, 661, 658, 661, 1594),
 (64, 282, 282, 284, 655, 655, 657, 1595),
 (714, 161, 158, 166, 513, 511, 519, 1596),
-(783, 166, 158, 166, 513, 511, 519, 1597);
-INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`, `maxY`, `dbid`) VALUES
+(783, 166, 158, 166, 513, 511, 519, 1597),
 (31, 168, 165, 174, 500, 494, 502, 1598),
 (133, 178, 176, 181, 484, 480, 487, 1599),
 (33, 143, 141, 145, 519, 518, 521, 1600),
-(26, 128, 125, 130, 505, 504, 506, 1601),
+(26, 128, 125, 130, 505, 504, 506, 1601);
+INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`, `maxY`, `dbid`) VALUES
 (28, 133, 133, 137, 528, 528, 529, 1603),
 (64, 146, 141, 151, 534, 532, 535, 1604),
 (27, 150, 145, 151, 534, 533, 535, 1605),
@@ -8314,20 +7809,15 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (140, 330, 328, 333, 435, 433, 438, 1991),
 (140, 333, 328, 333, 437, 433, 438, 1992),
 (67, 224, 213, 237, 253, 238, 267, 1994),
-(67, 225, 213, 237, 252, 238, 267, 1995),
 (67, 226, 213, 237, 252, 238, 267, 1996),
-(67, 228, 213, 237, 251, 238, 267, 1997),
 (67, 229, 213, 237, 253, 238, 267, 1998),
 (67, 228, 213, 237, 255, 238, 267, 1999),
 (67, 226, 213, 237, 257, 238, 267, 2000),
 (67, 223, 213, 237, 256, 238, 267, 2001),
-(67, 223, 213, 237, 254, 238, 267, 2002),
-(67, 220, 213, 237, 254, 238, 267, 2003),
 (67, 225, 213, 237, 250, 238, 267, 2004),
 (67, 224, 213, 237, 248, 238, 267, 2005),
 (67, 226, 213, 237, 248, 238, 267, 2006),
 (67, 228, 213, 237, 248, 238, 267, 2007),
-(67, 231, 213, 237, 251, 238, 267, 2008),
 (67, 232, 213, 237, 253, 238, 267, 2009),
 (67, 229, 213, 237, 256, 238, 267, 2010),
 (232, 270, 266, 280, 329, 319, 332, 2011),
@@ -8951,9 +8441,7 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (6, 350, 345, 355, 609, 604, 614, 2939),
 (6, 354, 349, 359, 608, 603, 613, 2940),
 (95, 149, 144, 154, 500, 495, 505, 2951),
-(251, 198, 193, 203, 3254, 3249, 3259, 2952),
 (251, 197, 192, 202, 3254, 3249, 3259, 2953),
-(251, 198, 193, 203, 3253, 3248, 3258, 2954),
 (270, 218, 213, 223, 3247, 3242, 3252, 2955),
 (270, 216, 211, 221, 3242, 3237, 3247, 2956),
 (270, 217, 212, 222, 3243, 3238, 3248, 2957),
@@ -9141,8 +8629,7 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (493, 210, 205, 215, 760, 755, 765, 3255),
 (493, 211, 206, 216, 756, 751, 761, 3256),
 (494, 218, 213, 223, 758, 753, 763, 3257),
-(494, 220, 215, 225, 758, 753, 763, 3258);
-INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`, `maxY`, `dbid`) VALUES
+(494, 220, 215, 225, 758, 753, 763, 3258),
 (494, 221, 216, 226, 761, 756, 766, 3259),
 (3, 219, 214, 224, 755, 750, 760, 3260),
 (3, 218, 213, 223, 755, 750, 760, 3261),
@@ -9156,7 +8643,8 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (497, 228, 223, 233, 754, 749, 759, 3269),
 (497, 229, 224, 234, 751, 746, 756, 3270),
 (497, 226, 221, 231, 753, 748, 758, 3271),
-(413, 515, 510, 520, 33, 28, 38, 3272),
+(413, 515, 510, 520, 33, 28, 38, 3272);
+INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`, `maxY`, `dbid`) VALUES
 (413, 517, 512, 522, 37, 32, 42, 3273),
 (413, 517, 512, 522, 39, 34, 44, 3274),
 (413, 520, 515, 525, 33, 28, 38, 3275),
@@ -9312,7 +8800,6 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (95, 213, 212, 220, 452, 448, 453, 3499),
 (29, 173, 163, 183, 455, 445, 465, 3501),
 (61, 210, 200, 220, 3322, 3312, 3332, 3502),
-(61, 206, 196, 216, 3323, 3313, 3333, 3503),
 (61, 201, 191, 211, 3330, 3320, 3340, 3505),
 (4, 206, 196, 216, 497, 487, 507, 3506),
 (4, 204, 194, 214, 500, 490, 510, 3507),
@@ -9563,12 +9050,9 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (137, 268, 263, 273, 103, 98, 108, 3784),
 (137, 266, 261, 271, 104, 99, 109, 3785),
 (137, 264, 259, 269, 100, 95, 105, 3786),
-(137, 268, 263, 273, 100, 95, 105, 3787),
 (137, 269, 264, 274, 110, 105, 115, 3788),
 (137, 263, 258, 268, 110, 105, 115, 3789),
 (137, 263, 258, 268, 105, 100, 110, 3790),
-(137, 269, 264, 274, 104, 99, 109, 3791),
-(137, 266, 261, 271, 109, 104, 114, 3792),
 (45, 66, 61, 71, 287, 282, 292, 3794),
 (45, 68, 63, 73, 283, 278, 288, 3795),
 (45, 80, 75, 85, 285, 280, 290, 3796),
@@ -9591,8 +9075,6 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (47, 109, 104, 114, 415, 410, 420, 3816),
 (57, 316, 311, 321, 412, 407, 417, 3821),
 (57, 311, 306, 316, 408, 403, 413, 3824),
-(57, 315, 310, 320, 407, 402, 412, 3825),
-(60, 314, 309, 319, 411, 406, 416, 3827),
 (188, 238, 233, 243, 312, 307, 317, 3829),
 (53, 231, 226, 236, 288, 283, 293, 3830),
 (53, 239, 234, 244, 297, 292, 302, 3831),
@@ -9673,8 +9155,6 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (201, 152, 147, 157, 212, 207, 217, 4166),
 (201, 150, 145, 155, 198, 193, 203, 4167),
 (251, 170, 165, 175, 395, 390, 400, 4177),
-(251, 171, 166, 176, 396, 391, 401, 4178),
-(251, 172, 167, 177, 400, 395, 405, 4180),
 (251, 168, 163, 173, 392, 387, 397, 4181),
 (584, 205, 200, 210, 3218, 3213, 3223, 4184),
 (584, 209, 204, 214, 3219, 3214, 3224, 4185),
@@ -9792,9 +9272,7 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (62, 101, 96, 106, 661, 656, 666, 4464),
 (8, 146, 141, 151, 651, 646, 656, 4472),
 (137, 265, 260, 270, 103, 98, 108, 4478),
-(137, 264, 259, 269, 108, 103, 113, 4479),
 (137, 268, 263, 273, 108, 103, 113, 4480),
-(137, 268, 263, 273, 100, 95, 105, 4481),
 (251, 170, 165, 175, 393, 388, 398, 4507),
 (251, 174, 169, 179, 396, 391, 401, 4508),
 (68, 171, 166, 176, 317, 312, 322, 4521),
@@ -9902,9 +9380,7 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (3, 160, 155, 165, 616, 611, 621, 5099),
 (3, 158, 153, 163, 615, 610, 620, 5100),
 (3, 161, 156, 166, 616, 611, 621, 5101),
-(60, 313, 308, 318, 410, 405, 415, 5124),
 (57, 311, 306, 316, 409, 404, 414, 5127),
-(57, 313, 308, 318, 413, 408, 418, 5128),
 (324, 548, 543, 553, 599, 594, 604, 5147),
 (62, 115, 110, 120, 632, 627, 637, 5159),
 (62, 119, 114, 124, 632, 627, 637, 5160),
@@ -9946,7 +9422,6 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (244, 350, 345, 355, 490, 485, 495, 5290),
 (61, 206, 201, 211, 3328, 3323, 3333, 5295),
 (61, 209, 204, 214, 3322, 3317, 3327, 5296),
-(61, 203, 198, 208, 3332, 3327, 3337, 5297),
 (264, 448, 443, 453, 700, 695, 705, 5307),
 (264, 448, 443, 453, 707, 702, 712, 5308),
 (311, 522, 517, 527, 3433, 3428, 3438, 5320),
@@ -10139,9 +9614,9 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (11, 213, 212, 214, 444, 443, 445, 5968),
 (11, 212, 211, 213, 441, 440, 442, 5970),
 (283, 353, 352, 354, 523, 522, 524, 5984),
-(739, 321, 320, 322, 743, 742, 744, 6125),
-(734, 246, 245, 247, 729, 728, 730, 6126),
-(734, 271, 270, 272, 742, 741, 743, 6127),
+(734, 319, 319, 320, 742, 741, 743, 6125),
+(734, 271, 271, 272, 742, 741, 743, 6126),
+(734, 252, 251, 252, 729, 728, 730, 6127),
 (477, 565, 535, 595, 3324, 3294, 3354, 6136),
 (391, 553, 551, 555, 708, 706, 710, 6238),
 (575, 77, 75, 79, 1643, 1641, 1645, 6282),
@@ -10207,10 +9682,7 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (199, 256, 247, 265, 360, 351, 369, 6670),
 (199, 261, 252, 270, 353, 344, 362, 6671),
 (251, 170, 167, 173, 401, 398, 404, 6672),
-(251, 172, 168, 176, 396, 392, 400, 6673),
-(251, 172, 168, 176, 397, 393, 401, 6674),
 (251, 169, 164, 174, 397, 392, 402, 6675),
-(251, 173, 169, 177, 395, 391, 399, 6677),
 (47, 109, 107, 111, 416, 414, 418, 6680),
 (47, 114, 112, 116, 416, 414, 418, 6681),
 (47, 110, 108, 112, 417, 415, 419, 6682),
@@ -10219,7 +9691,6 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (57, 310, 308, 312, 409, 407, 411, 6685),
 (57, 312, 310, 314, 409, 407, 411, 6686),
 (60, 312, 310, 314, 414, 412, 416, 6687),
-(60, 316, 314, 318, 412, 410, 414, 6688),
 (158, 332, 330, 334, 151, 149, 153, 6697),
 (158, 331, 329, 333, 159, 157, 161, 6698),
 (95, 73, 71, 75, 1643, 1641, 1645, 6699),
@@ -10363,13 +9834,10 @@ INSERT INTO `openrsc_npclocs` (`id`, `startX`, `minX`, `maxX`, `startY`, `minY`,
 (23, 421, 420, 422, 3725, 3724, 3726, 6891),
 (23, 423, 422, 424, 3728, 3727, 3729, 6892),
 (175, 310, 309, 311, 3346, 3345, 3347, 6893),
-(785, 514, 508, 517, 535, 533, 539, 6894);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_objects`
---
+(785, 514, 508, 517, 535, 533, 539, 6894),
+(114, 200, 179, 207, 457, 441, 467, 6895),
+(114, 224, 211, 226, 459, 445, 472, 6896),
+(734, 300, 299, 300, 729, 728, 730, 6897);
 
 DROP TABLE IF EXISTS `openrsc_objects`;
 CREATE TABLE IF NOT EXISTS `openrsc_objects` (
@@ -10381,11 +9849,7 @@ CREATE TABLE IF NOT EXISTS `openrsc_objects` (
   `d_id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`d_id`),
   UNIQUE KEY `d_id` (`d_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28434 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `openrsc_objects`
---
+) ENGINE=MyISAM AUTO_INCREMENT=28503 DEFAULT CHARSET=latin1;
 
 INSERT INTO `openrsc_objects` (`x`, `y`, `id`, `direction`, `type`, `d_id`) VALUES
 (332, 565, 1, 0, 1, 1),
@@ -38160,216 +37624,119 @@ INSERT INTO `openrsc_objects` (`x`, `y`, `id`, `direction`, `type`, `d_id`) VALU
 (427, 3736, 99, 0, 0, 28497),
 (427, 3738, 99, 0, 0, 28498),
 (411, 3737, 1116, 0, 0, 28499),
-(424, 3736, 729, 0, 0, 28500),
+(424, 3736, 729, 0, 0, 28500);
+INSERT INTO `openrsc_objects` (`x`, `y`, `id`, `direction`, `type`, `d_id`) VALUES
 (311, 3347, 1155, 0, 0, 28501),
-(305, 3301, 1155, 0, 0, 28502);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_orders`
---
-
-DROP TABLE IF EXISTS `openrsc_orders`;
-CREATE TABLE IF NOT EXISTS `openrsc_orders` (
-  `order_id` int(11) NOT NULL AUTO_INCREMENT,
-  `txn_id` varchar(19) NOT NULL,
-  `payer_email` varchar(75) NOT NULL,
-  `paid` float(9,2) NOT NULL,
-  `jewels_purchased` int(11) NOT NULL,
-  `user` int(11) NOT NULL,
-  `time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`order_id`),
-  UNIQUE KEY `txn_id` (`txn_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_players`
---
-
-DROP TABLE IF EXISTS `openrsc_players`;
-CREATE TABLE IF NOT EXISTS `openrsc_players` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `username` varchar(12) NOT NULL DEFAULT '',
-  `group_id` int(10) DEFAULT 10,
-  `email` varchar(255) DEFAULT NULL,
-  `pass` varchar(512) NOT NULL,
-  `salt` varchar(250) NOT NULL DEFAULT '',
-  `combat` int(10) DEFAULT 3,
-  `skill_total` int(10) DEFAULT 27,
-  `x` int(5) UNSIGNED DEFAULT 216,
-  `y` int(5) UNSIGNED DEFAULT 451,
-  `fatigue` int(10) DEFAULT 0,
-  `combatstyle` tinyint(1) DEFAULT 0,
-  `block_chat` tinyint(1) UNSIGNED DEFAULT 0,
-  `block_private` tinyint(1) UNSIGNED DEFAULT 0,
-  `block_trade` tinyint(1) UNSIGNED DEFAULT 0,
-  `block_duel` tinyint(1) UNSIGNED DEFAULT 0,
-  `cameraauto` tinyint(1) UNSIGNED DEFAULT 0,
-  `onemouse` tinyint(1) UNSIGNED DEFAULT 0,
-  `soundoff` tinyint(1) UNSIGNED DEFAULT 0,
-  `haircolour` int(5) UNSIGNED DEFAULT 2,
-  `topcolour` int(5) UNSIGNED DEFAULT 8,
-  `trousercolour` int(5) UNSIGNED DEFAULT 14,
-  `skincolour` int(5) UNSIGNED DEFAULT 0,
-  `headsprite` int(5) UNSIGNED DEFAULT 1,
-  `bodysprite` int(5) UNSIGNED DEFAULT 2,
-  `male` tinyint(1) UNSIGNED DEFAULT 1,
-  `skulled` int(10) UNSIGNED DEFAULT 0,
-  `charged` int(10) UNSIGNED DEFAULT 0,
-  `creation_date` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `creation_ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
-  `login_date` int(10) UNSIGNED DEFAULT 0,
-  `login_ip` varchar(15) DEFAULT '0.0.0.0',
-  `banned` varchar(255) NOT NULL DEFAULT '0',
-  `offences` int(11) NOT NULL DEFAULT 0,
-  `muted` varchar(255) NOT NULL DEFAULT '0',
-  `kills` int(10) NOT NULL DEFAULT 0,
-  `deaths` int(10) DEFAULT 0,
-  `iron_man` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `iron_man_restriction` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
-  `hc_ironman_death` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `online` tinyint(1) UNSIGNED ZEROFILL DEFAULT 0,
-  `quest_points` int(5) DEFAULT NULL,
-  `bank_size` int(10) UNSIGNED NOT NULL DEFAULT 192,
-  `highscoreopt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `forum_active` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `skill_total` (`skill_total`),
-  KEY `group_id` (`group_id`),
-  KEY `highscoreopt` (`highscoreopt`),
-  KEY `banned` (`banned`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_player_cache`
---
-
-DROP TABLE IF EXISTS `openrsc_player_cache`;
-CREATE TABLE IF NOT EXISTS `openrsc_player_cache` (
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `type` tinyint(1) NOT NULL,
-  `key` varchar(32) NOT NULL,
-  `value` varchar(13) NOT NULL,
-  `dbid` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`dbid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_private_message_logs`
---
-
-DROP TABLE IF EXISTS `openrsc_private_message_logs`;
-CREATE TABLE IF NOT EXISTS `openrsc_private_message_logs` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `sender` varchar(12) NOT NULL,
-  `message` varchar(255) NOT NULL,
-  `reciever` varchar(12) NOT NULL,
-  `time` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `reciever` (`reciever`),
-  KEY `time` (`time`),
-  KEY `sender` (`sender`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_quests`
---
-
-DROP TABLE IF EXISTS `openrsc_quests`;
-CREATE TABLE IF NOT EXISTS `openrsc_quests` (
-  `dbid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `playerID` int(10) UNSIGNED NOT NULL,
-  `id` int(10) DEFAULT NULL,
-  `stage` int(10) DEFAULT NULL,
-  PRIMARY KEY (`dbid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_staff_logs`
---
-
-DROP TABLE IF EXISTS `openrsc_staff_logs`;
-CREATE TABLE IF NOT EXISTS `openrsc_staff_logs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `staff_username` varchar(12) DEFAULT NULL,
-  `action` tinyint(2) UNSIGNED DEFAULT NULL,
-  `affected_player` varchar(12) DEFAULT NULL,
-  `time` int(10) UNSIGNED NOT NULL,
-  `staff_x` int(5) UNSIGNED NOT NULL DEFAULT 0,
-  `staff_y` int(5) UNSIGNED DEFAULT 0,
-  `affected_x` int(5) UNSIGNED DEFAULT 0,
-  `affected_y` int(5) UNSIGNED DEFAULT 0,
-  `staff_ip` varchar(15) DEFAULT '0.0.0.0',
-  `affected_ip` varchar(15) DEFAULT '0.0.0.0',
-  `extra` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `openrsc_trade_logs`
---
-
-DROP TABLE IF EXISTS `openrsc_trade_logs`;
-CREATE TABLE IF NOT EXISTS `openrsc_trade_logs` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `player1` varchar(12) CHARACTER SET utf16 DEFAULT NULL,
-  `player2` varchar(12) DEFAULT NULL,
-  `player1_items` varchar(255) DEFAULT NULL,
-  `player2_items` varchar(255) DEFAULT NULL,
-  `player1_ip` varchar(39) NOT NULL DEFAULT '0.0.0.0',
-  `player2_ip` varchar(39) NOT NULL DEFAULT '0.0.0.0',
-  `time` int(10) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `player1` (`player1`),
-  KEY `player2` (`player2`),
-  KEY `player1_ip` (`player1_ip`),
-  KEY `player2_ip` (`player2_ip`),
-  KEY `time` (`time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+(305, 3301, 1155, 0, 0, 28502),
+(272, 742, 22, 0, 0, 28503),
+(274, 742, 22, 0, 0, 28504),
+(275, 742, 22, 0, 0, 28505),
+(273, 738, 193, 0, 0, 28506),
+(275, 739, 193, 0, 0, 28507),
+(278, 738, 193, 0, 0, 28508),
+(279, 740, 193, 6, 0, 28509),
+(280, 740, 193, 6, 0, 28510),
+(280, 739, 193, 6, 0, 28511),
+(279, 744, 193, 6, 0, 28512),
+(280, 744, 193, 6, 0, 28513),
+(280, 745, 193, 6, 0, 28514),
+(266, 741, 1179, 4, 0, 28515),
+(269, 743, 1094, 0, 0, 28516),
+(269, 741, 1093, 0, 0, 28517),
+(271, 744, 1094, 0, 0, 28518),
+(271, 740, 1093, 0, 0, 28519),
+(277, 743, 1102, 6, 0, 28520),
+(277, 741, 1101, 6, 0, 28521),
+(278, 741, 1180, 4, 0, 28522),
+(280, 741, 1181, 4, 0, 28523),
+(247, 729, 22, 0, 0, 28524),
+(249, 729, 22, 0, 0, 28525),
+(250, 729, 22, 0, 0, 28526),
+(249, 726, 193, 0, 0, 28527),
+(248, 724, 193, 0, 0, 28528),
+(252, 724, 193, 0, 0, 28529),
+(255, 726, 193, 6, 0, 28530),
+(255, 727, 193, 6, 0, 28531),
+(254, 727, 193, 6, 0, 28532),
+(246, 734, 193, 0, 0, 28533),
+(249, 732, 193, 0, 0, 28534),
+(253, 734, 193, 0, 0, 28535),
+(255, 732, 193, 0, 0, 28536),
+(255, 731, 193, 6, 0, 28537),
+(254, 731, 193, 6, 0, 28538),
+(241, 728, 1179, 4, 0, 28539),
+(244, 730, 1094, 0, 0, 28540),
+(244, 728, 1093, 0, 0, 28541),
+(246, 727, 1093, 0, 0, 28542),
+(246, 731, 1094, 0, 0, 28543),
+(252, 728, 1101, 6, 0, 28544),
+(252, 730, 1102, 6, 0, 28545),
+(253, 728, 1180, 4, 0, 28546),
+(255, 728, 1181, 4, 0, 28547),
+(249, 759, 1069, 4, 0, 28548),
+(247, 758, 1070, 6, 0, 28549),
+(250, 755, 1070, 2, 0, 28550),
+(251, 762, 1070, 5, 0, 28551),
+(254, 756, 1070, 0, 0, 28552),
+(254, 758, 1070, 5, 0, 28553),
+(256, 758, 1070, 4, 0, 28554),
+(259, 757, 1070, 5, 0, 28555),
+(320, 742, 22, 0, 0, 28556),
+(322, 742, 22, 0, 0, 28557),
+(323, 742, 22, 0, 0, 28558),
+(321, 738, 193, 0, 0, 28559),
+(323, 739, 193, 0, 0, 28560),
+(326, 738, 193, 0, 0, 28561),
+(328, 739, 193, 6, 0, 28562),
+(328, 740, 193, 6, 0, 28563),
+(327, 740, 193, 6, 0, 28564),
+(328, 745, 193, 6, 0, 28565),
+(328, 744, 193, 6, 0, 28566),
+(327, 744, 193, 6, 0, 28567),
+(314, 741, 1179, 4, 0, 28568),
+(317, 741, 1093, 0, 0, 28569),
+(317, 743, 1094, 0, 0, 28570),
+(319, 740, 1093, 0, 0, 28571),
+(319, 744, 1094, 0, 0, 28572),
+(325, 741, 1101, 6, 0, 28573),
+(325, 743, 1102, 6, 0, 28574),
+(326, 741, 1180, 4, 0, 28575),
+(328, 741, 1181, 4, 0, 28576),
+(295, 729, 22, 0, 0, 28577),
+(297, 729, 22, 0, 0, 28578),
+(298, 729, 22, 0, 0, 28579),
+(296, 724, 193, 0, 0, 28580),
+(297, 726, 193, 0, 0, 28581),
+(300, 724, 193, 0, 0, 28582),
+(303, 726, 193, 6, 0, 28583),
+(303, 727, 193, 6, 0, 28584),
+(302, 727, 193, 6, 0, 28585),
+(294, 734, 193, 0, 0, 28586),
+(297, 732, 193, 0, 0, 28587),
+(301, 734, 193, 0, 0, 28588),
+(303, 732, 193, 0, 0, 28589),
+(303, 731, 193, 6, 0, 28590),
+(302, 731, 193, 6, 0, 28591),
+(289, 728, 1179, 4, 0, 28592),
+(292, 728, 1093, 0, 0, 28593),
+(292, 730, 1094, 0, 0, 28594),
+(294, 727, 1093, 0, 0, 28595),
+(294, 731, 1094, 0, 0, 28596),
+(300, 728, 1101, 6, 0, 28597),
+(300, 730, 1102, 6, 0, 28598),
+(301, 728, 1180, 4, 0, 28599),
+(303, 728, 1181, 4, 0, 28600),
+(297, 759, 1069, 4, 0, 28601),
+(295, 758, 1070, 6, 0, 28602),
+(298, 755, 1070, 2, 0, 28603),
+(299, 762, 1070, 5, 0, 28604),
+(302, 756, 1070, 0, 0, 28605),
+(302, 758, 1070, 5, 0, 28606),
+(304, 758, 1070, 4, 0, 28607),
+(307, 757, 1070, 5, 0, 28608);
 
 
--- Indexes for dumped tables
---
-
---
--- Indexes for table `openrsc_auctions`
---
-ALTER TABLE `openrsc_auctions` ADD FULLTEXT KEY `seller_username` (`seller_username`);
-ALTER TABLE `openrsc_auctions` ADD FULLTEXT KEY `buyer_info` (`buyer_info`);
-
---
--- Indexes for table `openrsc_chat_logs`
---
-ALTER TABLE `openrsc_chat_logs` ADD FULLTEXT KEY `message` (`message`);
-
---
--- Indexes for table `openrsc_generic_logs`
---
-ALTER TABLE `openrsc_generic_logs` ADD FULLTEXT KEY `message` (`message`);
-
---
--- Indexes for table `openrsc_itemdef`
---
 ALTER TABLE `openrsc_itemdef` ADD FULLTEXT KEY `name_2` (`name`);
-
---
--- Indexes for table `openrsc_private_message_logs`
---
-ALTER TABLE `openrsc_private_message_logs` ADD FULLTEXT KEY `message` (`message`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
