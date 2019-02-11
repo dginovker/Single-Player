@@ -9,3 +9,4 @@ server/out/
 server/local.conf
 
 gameserver.log
+db_check_log.txt
