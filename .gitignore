@@ -2,3 +2,7 @@
 *.pid
 
 \.DS_Store
+
+Required/client/Cache/credentials\.txt
+
+Required/client/Cache/hideIp\.txt
