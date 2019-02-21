@@ -1,7 +1,8 @@
 @echo off
 :# Open RSC: A replica RSC private server framework
 
-:# Path variables:
+:# Variables:
+SET required="Required\"
 SET mariadbpath="Required\mariadb10.3.8\bin\"
 
 :<------------Begin Start------------>
@@ -16,7 +17,8 @@ echo   %RED%2%NC% - Rank a player
 echo   %RED%3%NC% - Backup database
 echo   %RED%4%NC% - Restore database
 echo   %RED%5%NC% - Reset entire database
-echo   %RED%6%NC% - Exit
+echo   %RED%6%NC% - Upgrade to latest version
+echo   %RED%7%NC% - Exit
 echo:
 SET /P action=Please enter a number choice from above:
 echo:
@@ -26,7 +28,8 @@ if /i "%action%"=="2" goto rank
 if /i "%action%"=="3" goto backup
 if /i "%action%"=="4" goto import
 if /i "%action%"=="5" goto reset
-if /i "%action%"=="6" goto exit
+if /i "%action%"=="6" goto upgrade
+if /i "%action%"=="7" goto exit
 
 echo Error! %action% is not a valid option. Press enter to try again.
 echo:
@@ -191,11 +194,44 @@ echo:
 call START "" %mariadbpath%mysqld.exe --console
 echo Database wipe will occur in 5 seconds (gives time to start the database server on slow PCs)
 PING localhost -n 6 >NUL
-call %mariadbpath%mysql.exe -uroot -proot < Required/openrsc_game_server.sql
-call %mariadbpath%mysql.exe -uroot -proot < Required/openrsc_game_players.sql
+call %mariadbpath%mysql.exe -uroot -proot < Required\openrsc_game_server.sql
+call %mariadbpath%mysql.exe -uroot -proot < Required\openrsc_game_players.sql
 echo:
 echo The player database has been reset!
 echo:
 pause
 goto start
 :<------------End Reset------------>
+
+
+:<------------Begin Upgrade------------>
+:upgrade
+taskkill /F /IM Java*
+taskkill /F /IM mysqld*
+cls
+echo:
+call Required\curl -sL https://api.github.com/repos/open-rsc/single-player/releases/latest | Required\grep "tag_name" | Required\egrep -o (ORSC-).[0-9].[0-9].[0-9] > version.txt
+set /P version=<version.txt
+
+cd ..
+call Single-Player\Required\wget https://github.com/Open-RSC/Single-Player/archive/%version%.zip
+call Single-Player\Required\7za.exe x %version%.zip -aoa
+cd Single-Player-%version%
+call xcopy "*.*" "../Single-Player\" /K /D /H /Y
+
+cd ..
+call del %version%.zip
+call rd /s /q Single-Player-%version%
+call del Single-Player\version.txt
+
+cd Single-Player
+call START "" %mariadbpath%mysqld.exe --console
+echo Database wipe will occur in 5 seconds (gives time to start the database server on slow PCs)
+PING localhost -n 6 >NUL
+call %mariadbpath%mysql.exe -uroot -proot < Required\openrsc_game_server.sql
+echo:
+echo Upgrade complete.
+echo:
+pause
+goto start
+:<------------End Upgrade------------>
