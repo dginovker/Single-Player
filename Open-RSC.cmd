@@ -1,11 +1,12 @@
 @echo off
 :# Open RSC: A replica RSC private server framework
 
-:# Variables:
+:# Variable paths:
 SET required="Required\"
 SET mariadbpath="Required\mariadb10.3.8\bin\"
 
 :<------------Begin Start------------>
+REM Initial menu displayed to the user
 :start
 cls
 echo:
@@ -40,6 +41,7 @@ goto start
 
 :<------------Begin Exit------------>
 :exit
+REM Shuts down existing processes
 taskkill /F /IM Java*
 taskkill /F /IM mysqld*
 exit
@@ -135,7 +137,10 @@ goto start
 
 :<------------Begin Backup------------>
 :backup
+REM Shuts down existing processes
 taskkill /F /IM Java*
+
+REM Performs a full database export
 cls
 echo:
 echo What do you want to name your player database backup? (Avoid spaces and symbols for the filename)
@@ -153,8 +158,11 @@ goto start
 
 :<------------Begin Import------------>
 :import
+REM Shuts down existing processes
 taskkill /F /IM Java*
+
 cls
+REM Performs a full database import
 echo:
 dir /B *.sql
 echo:
@@ -173,7 +181,10 @@ goto start
 
 :<------------Begin Reset------------>
 :reset
+REM Shuts down existing processes
 taskkill /F /IM Java*
+
+REM Verifies the user wishes to clear existing player data
 cls
 echo:
 echo Are you ABSOLUTELY SURE that you want to reset the player database?
@@ -189,6 +200,7 @@ pause
 goto start
 
 :wipe
+REM Starts up the database server and imports both server and player database files to replace anything previousy existing
 cls
 echo:
 call START "" %mariadbpath%mysqld.exe --console
@@ -206,24 +218,31 @@ goto start
 
 :<------------Begin Upgrade------------>
 :upgrade
+REM Shuts down existing processes
 taskkill /F /IM Java*
 taskkill /F /IM mysqld*
+
+REM Fetches the most recent release version
 cls
 echo:
 call Required\curl -sL https://api.github.com/repos/open-rsc/single-player/releases/latest | Required\grep "tag_name" | Required\egrep -o (ORSC-).[0-9].[0-9].[0-9] > version.txt
 set /P version=<version.txt
 
+
+REM Downloads the most recent release archive and copies the contents into "Single-Player"
 cd ..
 call Single-Player\Required\wget https://github.com/Open-RSC/Single-Player/archive/%version%.zip
 call Single-Player\Required\7za.exe x %version%.zip -aoa
 cd Single-Player-%version%
 call xcopy "*.*" "../Single-Player\" /K /D /H /Y
 
+REM Cleans up files that are no longer needed
 cd ..
 call del %version%.zip
 call rd /s /q Single-Player-%version%
 call del Single-Player\version.txt
 
+REM Launches the database server and imports only the server data, leaving player data safely alone
 cd Single-Player
 call START "" %mariadbpath%mysqld.exe --console
 echo Database wipe will occur in 5 seconds (gives time to start the database server on slow PCs)
