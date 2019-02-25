@@ -1,4 +1,4 @@
-# Open RSC
+# Open RSC Single Player
 
 # Table of contents <a name="top"></a>
 1. [Project Information](#general)
@@ -20,9 +20,11 @@ The first priority of our development is ensuring the authentic content found in
 
 1. <a href="https://github.com/Open-RSC/Single-Player/releases">Download the latest release "Source code (zip)"</a>
 
-2. Unzip the downloaded file and open the folder that it created.
+2. Unzip the downloaded.
 
-3. Double click on "Open-RSC.cmd"
+3. !Important! Rename the folder to "Single-Player" if it is named something else after being extracted from the zip file. This is required for upgrading to new versions to work!
+
+4. Open the "Single-Player" folder and double click on "Open-RSC.cmd"
 
 [Return to top](#top)
 
