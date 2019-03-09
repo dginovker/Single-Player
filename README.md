@@ -1,3 +1,12 @@
+# Notice: This repository has moved!
+
+## [Click here to find the latest version of RSC Single Player](https://gitlab.openrsc.com/open-rsc/Single-Player)
+
+<br/><br/><br/>
+
+*****
+
+
 # Open RSC Single Player
 
 # Table of contents <a name="top"></a>
